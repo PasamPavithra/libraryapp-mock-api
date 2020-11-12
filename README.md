@@ -1,103 +1,111 @@
-# bankapp-mock-api
+# bankapp-mock-api MYSQL
 
-#### Prerequisite
-* Create a folder
+#### Task 1: Create Database
 ```
-mkdir bankapp-mock-api
-cd bankapp-mock-api
-```
-
-#### Step 1: Create a node js project
-```
-npm init -y
+create database pavithra_db;
+use database_db;
 ```
 
-#### Step 2: Install json server dependency
+#### Task 1: Register Table
 ```
-npm i json-server
-```
-
-#### Step 3: Create server.js
-```js
-const jsonServer = require('json-server')
-
-const server = jsonServer.create()
-
-const router = jsonServer.router('db.json')
-const middlewares = jsonServer.defaults()
- 
-server.use(middlewares)
-server.use('/api', router)
-server.listen(process.env.PORT || 5000, () => {
-  console.log('JSON Server is running')
-})
-
-
+create table register (
+id int primary key auto_increment,
+name varchar(40) NOT NULL,
+email varchar(50) NOT NULL,
+password varchar(30) NOT NULL,
+role varchar(10) NOT NULL default 'USER',
+active boolean NOT NULL default 1,
+unique(email),
+check (role in ('USER','ADMIN'))
+);
 ```
 
-
-#### Step 4: Create db.json
-```js
-{
-    "users": [
-        { "id": 1, "name":"Naresh Kumar H", "email":"nareshkumarh@live.com", 
-        "password":"pass123", "role": "USER"
-        },
-        { "id": 2, "name":"Tushant", "email":"tushant@gmail.com", 
-            "password":"pass123", "role": "ADMIN"
-        }
-    ],
-    "accounts":[
-
-    ],
-    "transactions":[
-
-    ]
-}
+#### Task 1.1: Insert values into Register table
+```
+insert into register (name,email,password,role) values ( 'Pavi','pavi@gmail.com', '123', 'ADMIN');
+insert into register (name,email,password,role) values ( 'Pasam','pasam@gmail.com', '456', 'USER');
+insert into register (name,email,password,role) values ( 'sushmita','sushmita@gmail.com', '789', 'USER');
 ```
 
-#### Step 5: Run the Node JS Project
+#### Task 1.2: List all Register
 ```
-node server.js
+select * from register;
+
+
 ```
 
-#### Step 6: Test - List Users API 
+#### Task 2: Login table
 ```
-http://localhost:5000/api/users
-```
-
-Output:
-```js
-[
- {
- id: 1,
- name: "Naresh Kumar H",
- email: "nareshkumarh@live.com",
- password: "pass123",
- role: "USER"
- },
-{
- id: 2,
- name: "Tushant",
- email: "tushant@gmail.com",
- password: "pass123",
- role: "ADMIN"
-}
-]
+create table login(
+id int primary key auto_increment,
+login_id int NOT NULL,
+email varchar(20) NOT NULL,
+password varchar(10) NOT NULL,
+role varchar(10) NOT NULL,
+check (role in ('USER','ADMIN')),
+foreign key (login_id) references register(id)
+);
 ```
 
-#### Step 7: Test - View User Details API 
+#### Task 2.1: Insert values into Login table
 ```
-http://localhost:5000/api/users/1
+insert into login(email,password,role) values ('pasam@gmail.com','222','ADMIN');
+insert into login(email,password,role) values('pavi@123gmail.com','111','USER');
 ```
 
-Output:
-```js
- {
- id: 1,
- name: "Naresh Kumar H",
- email: "nareshkumarh@live.com",
- password: "pass123",
- role: "USER"
- }
+#### Task 2.2: List login 
+```
+selelct * from login where role='ADMIN';
+selelct * from login where role='USER';
+```
+
+#### Task 3: Creating books table
+```
+create table book (
+bookid int primary key auto_increment,
+title varchar(40) NOT NULL,
+author varchar(50) NOT NULL,
+publisher varchar(30) NOT NULL,
+category varchar(10) NOT NULL
+);
+```
+
+#### task 3.1: Inserting values into book 
+```
+insert into book (title,author,publisher,category) values ( 'Advance SE','Athreya', 'naveeneeti', 'CSE');
+insert into book (title,author,publisher,category) values ( 'Multiprocessor','Narayan', 'naveneeti', 'ECE');
+insert into book (title,author,publisher,category) values ( 'DigitalSignals','Athreya', 'Master', 'ECE');
+```
+
+#### Task 3.2: List book 
+```
+select * from book where author='athreya';
+select * from book where publisher='naveneeti';
+select * from book where category='CSE';
+```
+#### Task 4: Creating borrow books table
+```
+create table borrow (
+bookid int primary key auto_increment,
+id int NOT NULL,
+title varchar(40) NOT NULL,
+author varchar(50) NOT NULL,
+publisher varchar(30) NOT NULL,
+category varchar(10) NOT NULL,
+created_date timestamp not null default current_timestamp,
+return_date timestamp not null default current_timestamp on update current_timestamp,
+unique(id),
+foreign key(id) references book(book_id)
+);
+```
+#### task 4.1: Inserting values into borrow table 
+```
+insert into borrow (title,author,publisher,category) values ( 'Advance SE','Athreya', 'naveeneeti', 'CSE');
+insert into borrow (title,author,publisher,category) values ( 'Multiprocessor','Narayan', 'naveneeti', 'ECE');
+insert into borrow (title,author,publisher,category) values ( 'DigitalSignals','Athreya', 'Master', 'ECE');
+```
+#### Task 4.2: List brrow table
+```
+select * from borrow;
+
 ```
