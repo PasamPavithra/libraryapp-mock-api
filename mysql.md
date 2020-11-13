@@ -95,7 +95,7 @@ category varchar(10) NOT NULL,
 created_date timestamp not null default current_timestamp,
 return_date timestamp not null default current_timestamp on update current_timestamp,
 unique(id),
-foreign key(id) references book(book_id)
+foreign key(id) references book(bookid)
 );
 ```
 #### task 4.1: Inserting values into borrow table 
