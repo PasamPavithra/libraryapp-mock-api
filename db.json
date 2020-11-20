@@ -1,6 +1,11 @@
 {
-    "users": [
-
+    "users": [{
+        "name": "pavi",
+        "email": "pavi@gmail.com",
+        "password": "pass123",
+        "mobileno": "9866100611",
+        "role": "ADMIN"
+    }
     ],
     "accounts": [
 
